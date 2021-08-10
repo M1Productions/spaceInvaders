@@ -1,0 +1,4 @@
+URL=jdbc:hsqldb:hsql://localhost/
+DRIVER=org.hsqldb.jdbc.JDBCDriver
+USER=SA
+PASSWORD=

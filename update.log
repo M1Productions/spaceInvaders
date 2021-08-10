@@ -1,0 +1,30 @@
+Maximilian Prietzel, Valentin Tietze
+26.12.2020
+23.04.2021
+
+
+What's New?:
+	- functional custom key bindings 
+	- back,menue and quit buttons are now image buttons and look beautifull
+	- made the window movable
+	- invaders and friendlyship are now in a invaderCl all together. that saves runtime and code
+	- added background to warning screen like in igMenue
+	- delete modeHistory not by going into the warning screen but by leaving it
+	- if clicking on x button while in game, quit after beeing in warning screen instead of going into menue
+
+
+What is to do?:
+
+there is allways something to do :)
+
+optional:
+  	- item system
+    		-> points
+  	- dificulty
+    		-> Hard: chance for a weapon jam
+		-> Default: lower spawnrates for greenInvader, in general larger gaps betwen spawns
+
+functional:
+	- change the color the invaders have in potato mode to different colors. now they are all red
+	- shift all buttons into right position (seciffically in game)
+	- add a minimize button
