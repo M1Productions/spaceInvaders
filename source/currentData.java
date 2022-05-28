@@ -18,11 +18,11 @@ class CurrentData
   static int getSessionID()
   { return CurrentData.sessionID; }
 
-  static void setRun(int runID)
+  /*static void setRun(int runID)
   { CurrentData.runID = runID; }
   static int getRunID()
   { return CurrentData.runID; }
-
+*/
   static void changeKey(int pos , String key)
   { CurrentData.keys[pos] = key.charAt(0); }
   static void setKeys(char[] keys)

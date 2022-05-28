@@ -157,6 +157,7 @@ public void keyPressed() {
     case 10: ck.keyPressed();        break;
     case 11: ws.keyPressed();        break;
   }
+  key = 0; // catch escape button to not exit game if not wanted
 }
 
 public void keyReleased() {
