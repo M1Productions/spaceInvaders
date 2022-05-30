@@ -1,3 +1,5 @@
 echo OFF
-echo ..kompilieren..............................................
+echo ..kompilieren..
 javac -cp .;.\lib\core\library\core.jar.;.\lib\hsqldb\lib\hsqldb.jar -d .\bin source\*.java
+echo ..done..
+pause

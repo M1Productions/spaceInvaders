@@ -235,24 +235,21 @@ interface Mode
 }
 
 
-class TopMenueBar
-{
-  ImageButton quitButton, backButton, menueButton;
-  int h = 20;
+class TopMenueBar {
+  ImageButton quitButton, backBt, menueButton;
+  private int h = 20;
   boolean mouseWasPressed;
   int difX, difY;
 
   public void setup()
   {
-    quitButton = new ImageButton(loadImage("data/quitButton.png"),680,0,this.h,this.h,true);
-    backButton = new ImageButton(loadImage("data/backButton.png"),0,0,this.h,this.h,false);
-    menueButton = new ImageButton(loadImage("data/menueButton.png"),this.h,0,this.h,this.h,false);
+    this.quitButton = new ImageButton(loadImage("data/quitButton.png"),680,0,this.h,this.h,true);
+    this.backBt = new ImageButton(loadImage("data/backButton.png"),0,0,this.h,this.h,false);
+    this.menueButton = new ImageButton(loadImage("data/menueButton.png"),this.h,0,this.h,this.h,false);
   }
 
-  public void draw()
-  {
-    if(mousePressed && mouseWasPressed)
-    {
+  public void draw() {
+    if(mousePressed && mouseWasPressed) {
       PointerInfo a = MouseInfo.getPointerInfo();
       Point b = a.getLocation();
       windowX = (int) b.getX();
@@ -266,10 +263,9 @@ class TopMenueBar
     rect(0,0,700,20);
 
     quitButton.draw();
-    if(mode != 0) //if you are in login you could dodge the login with the menue/back button
-    {
+    if(mode != 0) { // if you are in login you could dodge the login with the menue/back button
       if(modeHistory.size() > 0)
-      { backButton.draw(); }
+      { backBt.draw(); }
 
       menueButton.draw();
     }
@@ -283,7 +279,7 @@ class TopMenueBar
 
     if(mode == 2) //if you are in game you dont just want to leave because you cold loose your highscore
     {
-      if((backButton.mouseIsOver() && modeHistory.size() > 0) || menueButton.mouseIsOver())
+      if((backBt.mouseIsOver() && modeHistory.size() > 0) || menueButton.mouseIsOver())
       {
         ws.quitAfter = false;
         screenShot = get();
@@ -298,10 +294,12 @@ class TopMenueBar
     }
     else if(quitButton.mouseIsOver())
     { exit(); }
-    else if(backButton.mouseIsOver() && mode != 0 && modeHistory.size() > 0)
-    {
-      mode = modeHistory.get(modeHistory.size()-1);
-      modeHistory.remove(modeHistory.size()-1);
+    else if(backBt.mouseIsOver() && mode != 0 && modeHistory.size() > 0) {
+      int lastMode = modeHistory.get(modeHistory.size()-1);
+      if(lastMode != 2 ) {
+        mode = lastMode;
+        modeHistory.remove(modeHistory.size()-1);
+      }
     }
     else if(menueButton.mouseIsOver() && mode != 0 && mode != 11)
     {
@@ -608,8 +606,7 @@ class Login
     { this.fade -= 2; }
   }
 
-  public void keyPressed()
-  {
+  public void keyPressed() {
     inputUsername.keyPressed(key,(int)keyCode);
     inputPassword.keyPressed(key,(int)keyCode);
   }
@@ -707,9 +704,9 @@ public class TextBox
   public int x, y, h, w, textLim = 16,strokeWeight;
   public int bg = color(255,0,162,50), bgselect = color(255,0,162,150), col = color(255,0,162);
 
-  public String Text = "", spaceHolder = "";
+  public String Text = "", spaceHolder;
 
-  public boolean selected = false, singleLetter = false;
+  public boolean selected = false, singleLetter;
 
    public int index=0; //for KeyChoose
 
@@ -741,8 +738,7 @@ public class TextBox
 
       textAlign(LEFT,CENTER);
       textSize(h/2);
-      if(this.Text == "")
-      {
+      if(this.Text == "") {
         fill(col);
         text(spaceHolder, x+10, y+(h/2)-(h/16));
       }
@@ -756,46 +752,35 @@ public class TextBox
       }
    }
 
-   public void keyPressed(char KEY, int KEYCODE)
-   {
-      if(selected)
-      {
+   public void keyPressed(char KEY, int KEYCODE) {
+      if(selected) {
         if(this.singleLetter)
         { this.removeText(); }
-         if(KEYCODE == (int)BACKSPACE)
-         { removeText(); }
-         else if(KEYCODE == 37)
-         { addText('<'); }
-         else if(KEYCODE == 38)
-         { addText('^'); }
-         else if(KEYCODE == 39)
-         { addText('>'); }
-         else
-         {
-           boolean isKeyCapitalLetter = (KEY >= 'A' && KEY <= 'Z'); // CHECK IF THE KEY IS A LETTER OR A NUMBER
-           boolean isKeySmallLetter = (KEY >= 'a' && KEY <= 'z');
-           boolean isKeyNumber = (KEY >= '0' && KEY <= '9');
+        if(KEYCODE == (int)BACKSPACE)
+        { removeText(); }
+        else if(KEYCODE == 37)
+        { addText('<'); }
+        else if(KEYCODE == 38)
+        { addText('^'); }
+        else if(KEYCODE == 39)
+        { addText('>'); }
+        else {
+          boolean isKeyCapitalLetter = (KEY >= 'A' && KEY <= 'Z'); // CHECK IF THE KEY IS A LETTER OR A NUMBER
+          boolean isKeySmallLetter = (KEY >= 'a' && KEY <= 'z');
+          boolean isKeyNumber = (KEY >= '0' && KEY <= '9');
 
-           if (isKeyCapitalLetter || isKeySmallLetter || isKeyNumber)
-           { addText(KEY); }
-         }
-
-      	 if(this.singleLetter)
-      	 {
-           CurrentData.changeKey(this.index,this.Text);
-           SQL.setKeys();
-      	 }
+          if (isKeyCapitalLetter || isKeySmallLetter || isKeyNumber)
+          { addText(KEY); }
+        }
       }
    }
 
-   private void addText(char text)
-   {
+   private void addText(char text) {
       if (Text.length() < textLim) //IF THE TEXT WIDHT IS IN BOUNDARIES OF THE TEXTBOX
       { this.Text += text; }
    }
 
-   private void removeText()
-   {
+   private void removeText() {
       if (Text.length() >= 1)
       { Text = Text.substring(0, Text.length() - 1); }
    }
@@ -803,18 +788,20 @@ public class TextBox
    public void clearText()
    { this.Text = ""; }
 
-   public void mousePressed()
-   {
+   public void mousePressed() {
       if (mouseX >= this.x && mouseX <= this.x+this.w && mouseY >= this.y && mouseY <= this.y+this.h)
       { this.selected = true; }
       else
       { this.selected = false; }
    }
+
+   public char getLetter(int i) {
+     return this.Text.charAt(i);
+   }
 }
 
 
-class ScoreTable
-{
+class ScoreTable {
   float x=100, y=200, w=500;
   boolean state = true;
   String [][] content = new String[10][2];
@@ -993,8 +980,7 @@ class DeleteAcScreen implements Mode
     { this.fade -= 2; }
   }
 
-  public void keyPressed()
-  {
+  public void keyPressed() {
     password.keyPressed(key,(int)keyCode);
   }
 
@@ -1073,8 +1059,7 @@ class ChangePwScreen implements Mode
     { this.fade -= 2; }
   }
 
-  public void keyPressed()
-  {
+  public void keyPressed() {
     oldPassword.keyPressed(key,(int)keyCode);
     newPassword.keyPressed(key,(int)keyCode);
   }
@@ -1246,8 +1231,7 @@ class CustomKeys implements Mode
   Button aplyButton;
   TextBox shootKey, rightKey, leftKey;
 
-  public void setup()
-  {
+  public void setup() {
     aplyButton = new Button("Apply",280,465,140,80);
 
     leftKey  = new TextBox("<",515,195,80,46,true);
@@ -1258,7 +1242,7 @@ class CustomKeys implements Mode
     rightKey.index = 1;
     shootKey.index = 2;
 
-    updateKeys();
+    this.updateKeys();
 
     rightKey.textLim = 1;
     leftKey.textLim = 1;
@@ -1269,8 +1253,7 @@ class CustomKeys implements Mode
     shootKey.strokeWeight = 10;
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(1);
 
     displayHeadline("Custom Keys", 70);
@@ -1302,12 +1285,14 @@ class CustomKeys implements Mode
     leftKey.mousePressed();
     shootKey.mousePressed();
 
-    //if(aplyButton.mouseIsOver())
-  //{ /*todo*/ }
+    if(aplyButton.mouseIsOver()) {
+      char[] s = {this.leftKey.getLetter(0), this.rightKey.getLetter(0), this.shootKey.getLetter(0)};
+      CurrentData.setKeys(s);
+      SQL.setKeys();
+    }
   }
 
-  public void keyPressed()
-  {
+  public void keyPressed() {
     rightKey.keyPressed(key,(int)keyCode);
     leftKey.keyPressed(key,(int)keyCode);
     shootKey.keyPressed(key,(int)keyCode);
@@ -1316,8 +1301,7 @@ class CustomKeys implements Mode
   public void keyReleased(){}
   public void mouseReleased(){}
 
-  public void updateKeys()
-  {
+  public void updateKeys() { // set key buttons to saved keys
     leftKey.removeText();
     rightKey.removeText();
     shootKey.removeText();
@@ -1416,16 +1400,13 @@ class Game implements Mode
     {spawnRate *= 0.9999615;}
 
     player.draw(); //Player draw and playerShots draw
-    for(int i = player.playerShots.size() -1; i >= 0; i--)
-    {
+    for(int i = player.playerShots.size() -1; i >= 0; i--) {
       s = player.playerShots.get(i);
 
-      for(int j = allInvaders.size() -1; j >= 0; j--)
-      {
+      for(int j = allInvaders.size() -1; j >= 0; j--) {
         inv = allInvaders.get(j);
 
-        if(inv.touch(s))
-        {
+        if(inv.touch(s)) {
           inv.onDie();
           player.playerShots.remove(s);
         }
@@ -1451,35 +1432,18 @@ class Game implements Mode
       { player.playerShots.remove(s); }
     }
 
-    //invaderShots draw
-    for(int i = invaderShots.size() -1; i >= 0; i--)
-    {
-      s = invaderShots.get(i);
-
-      if(player.touch(s))
-      {
-        player.looseLive(1);
-        invaderShots.remove(s);
-      }
-
-      s.draw();
-      if(s.y <= (0-s.h))
-      { this.invaderShots.remove(s); }
-    }
-
-    for(int i = allInvaders.size() -1; i >= 0; i--)
-    {
+    // invaders draw
+    for(int i = allInvaders.size() -1; i >= 0; i--) {
       inv = allInvaders.get(i);
       inv.draw();
 
-      if(inv.isDead())
-      {
+      if(inv.isDead()) {
         animations.add(new Animation(inv.getX(),inv.getY(),8,deathAnimation));
         allInvaders.remove(inv);
       }
     }
 
-    //animations draw
+    // animations draw
     if(graphix == 0)
     {
       for(int i = animations.size() -1; i >= 0; i--)
@@ -1491,9 +1455,23 @@ class Game implements Mode
       }
     }
 
-    bu.draw(); //pauseButton draw
+    // invaderShots draw
+    for(int i = invaderShots.size() -1; i >= 0; i--) {
+      s = invaderShots.get(i);
 
-    if(keyPressed) //KeyPressed handling
+      s.draw();
+      if(s.y <= (0-s.h))
+      { this.invaderShots.remove(s); }
+
+      if(player.touch(s)) {
+        player.looseLive(1);
+        invaderShots.remove(s);
+      }
+    }
+
+    bu.draw(); // pauseButton draw
+
+    if(keyPressed) // KeyPressed handling
     {
       if(keys[0])
       { player.move(-5); }
@@ -1502,9 +1480,10 @@ class Game implements Mode
       if(keys[2])
       { player.shoot(); }
     }
+  }
 
-    if(player.lives <= 0)
-    {
+  public void endRun() {
+    if(player.lives <= 0) {
       screenShot = get();
       SQL.createRun(player.score);
       modeHistory.add(mode);
@@ -1573,12 +1552,11 @@ interface Invader
 {
   public void draw();
   public boolean touch(Shot s);
-  public void move(int x, int y);
   public int getX();
   public int getY();
   public void onDie();
   public boolean isDead();
-  public void onTouch(); //when the invader or friendly ship gets to the bottom of the screen
+  public void onTouch(); // when the invader or friendly ship gets to the bottom of the screen
 }
 
 
@@ -1606,26 +1584,21 @@ class IGMenue implements Mode
     mainMenueButton.draw();
   }
 
-  public void mousePressed()
-  {
-    if(continueButton.mouseIsOver())
-    {
+  public void mousePressed() {
+    if(continueButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 2;
     }
-    else if(restartButton.mouseIsOver())
-    {
+    else if(restartButton.mouseIsOver()) {
       game.restart();
       modeHistory.add(mode);
       mode = 2;
     }
-    else if(settingsButton.mouseIsOver())
-    {
+    else if(settingsButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 4;
     }
-    else if(mainMenueButton.mouseIsOver())
-    {
+    else if(mainMenueButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 1;
     }
@@ -1663,14 +1636,12 @@ class DeathScreen implements Mode
 
   public void mousePressed()
   {
-    if(restartButton.mouseIsOver())
-    {
+    if(restartButton.mouseIsOver()) {
       game.restart();
       modeHistory.add(mode);
       mode = 2;
     }
-    else if(mainMenueButton.mouseIsOver())
-    {
+    else if(mainMenueButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 1;
     }
@@ -1685,7 +1656,7 @@ class DeathScreen implements Mode
 class Player
 {
   int x, y, size, lives, score, cooldown;
-  float rate = 34, pointMult = 1;
+  float rate, pointMult; // firing rate; multiplyer for more points in longer games
   PImage img;
   PImage heart = loadImage("heart.png");
   ArrayList<Shot> playerShots = new ArrayList <Shot>();
@@ -1694,26 +1665,28 @@ class Player
   {
     this.x = x;
     this.y = y;
-    this.lives = 3;
-    this.score = 0;
     this.size = size;
     this.img = img;
+
+    this.lives = 3;
+    this.score = 0;
+    this.rate = 34;
+    this.pointMult = 1;
   }
 
   public void draw()
   {
-    if(pointMult < 5)
-    {pointMult *= 1.000089417;}
+    if(pointMult < 5) {
+      pointMult *= 1.000089417;
+    }
 
     fill(0xffFFFFFF);
     textSize(32);
     textAlign(RIGHT);
     text(this.score, width-50, 58);
 
-    for(int i = 0; i<this.lives; i++)
-    {
-      if(graphix == 2)
-      {
+    for(int i = 0; i<this.lives; i++) {
+      if(graphix == 2) {
         stroke(255,0,0);
         fill(255,0,0);
         circle(25+40*i, 55, 30);
@@ -1722,8 +1695,7 @@ class Player
       { image(this.heart, 10+40*i, 30, 30, 30); }
     }
 
-    if(graphix == 2)
-    {
+    if(graphix == 2) {
       stroke(0,0,255);
       fill(255);
       circle(this.x+this.size/2, this.y+this.size/2, this.size);
@@ -1736,16 +1708,13 @@ class Player
     {this.rate *= 0.9999615f;}
   }
 
-  public void move(int xMov)
-  {
+  public void move(int xMov) {
     if(this.x+xMov >= 0 && this.x+xMov <= (width - this.size))
     { this.x += xMov; }
   }
 
-  public void shoot()
-  {
-    if(this.cooldown >= this.rate)
-    {
+  public void shoot() {
+    if(this.cooldown >= this.rate) {
       this.playerShots.add(new Shot(this.x+this.size/2-1, this.y, 2, 10, -7, color(0xffFF0000)));
       this.cooldown = 0;
     }
@@ -1754,19 +1723,21 @@ class Player
   public void addPoints(int points)
   { this.score += Math.round(points* this.pointMult); }
 
-  public void looseLive(int lives)
-  { this.lives -= lives; }
+  public void looseLive(int lives) {
+    this.lives -= lives;
+    if(this.lives <= 0) {
+      game.endRun();
+    }
+  }
 
-  public void addLive()
-  {
+  public void addLive() {
     if(this.lives<=4)
     { this.lives ++; }
     else
-    { this.score += 10; }
+    { this.score += 10; } // way too less !
   }
 
-  public boolean touch(Shot e)
-  {
+  public boolean touch(Shot e) {
     return (this.y < e.y && e.y < this.y+this.size && this.x < e.x && e.x < this.x+this.size);
   }
 }
@@ -1774,11 +1745,10 @@ class Player
 
 class Shot
 {
-  int x, y, v, h, w;
+  int x, y, v, h, w; // v=velocity in vertical direction
   int col;
 
-  Shot(int x, int y, int w, int h, int v, int col)
-  {
+  Shot(int x, int y, int w, int h, int v, int col) {
     this.x = x;
     this.y = y;
     this.h = h;
@@ -1787,8 +1757,7 @@ class Shot
     this.col = col;
   }
 
-  public void draw()
-  {
+  public void draw() {
     this.y += this.v;
     noStroke();
     fill(this.col);
@@ -1804,34 +1773,30 @@ class invaderCl implements Invader
   PImage img;
   boolean dead = false;
   int spawn = 3; //for the spawning animation
-  Game game;
 
-  invaderCl(int x, int y, int size, int v, PImage img,Game game)
+  invaderCl(int x, int y, int size, int v, PImage img, Game game)
   {
     this.x = x;
     this.y = y;
     this.v = v;
     this.size = size - this.spawn*5;
     this.img = img;
-    this.game = game;
   }
 
-  public void draw()
-  {
-    if(this.y >= 650) //if the invader is at the bottom
-    { this.onTouch(); }
+  public void draw() {
+    this.x += this.v; // go in moving direction
 
-    this.x += this.v;
-
-    if(this.x >= width-this.size) //if the invader goes out of the screen on the right
+    if(this.x >= width-this.size || this.x <= 0) //if the invader goes out of the screen on the right/ left
     {
-      this.y += 50;
-      this.v = this.v *(-1) -1;
-    }
-    else if(this.x <= 0) //if the invader goes out of the screen on the left
-    {
-      this.y += 50;
-      this.v = this.v *(-1) +1;
+      if(this.v < 0) {
+        this.v = (this.v-1) *(-1);
+      }
+      else {
+        this.v = (this.v+1) *(-1) ;
+      }
+      this.y += 50; // shift the invader one row down
+      if(this.y >= 650) //if the invader is at the bottom
+      { this.onTouch(); }
     }
 
     if(this.spawn > 0)
@@ -1840,20 +1805,17 @@ class invaderCl implements Invader
       this.size += 5;
     }
 
-    if(graphix == 2)
-    {
-      stroke(255,0,0);
-      fill(255,0,0);
-      circle(this.x+this.size/2, this.y+this.size/2,this.size);
+    if(graphix == 2) {
+      this.drawSimple(); // in an extra function so it can be changed easily
     }
     else
     { image(this.img,this.x,this.y,this.size,this.size); }
   }
 
-  public void move(int x, int y)
-  {
-    this.x += x;
-    this.y += y;
+  private void drawSimple() {
+    stroke(255,0,0);
+    fill(255,0,0);
+    circle(this.x+this.size/2, this.y+this.size/2,this.size);
   }
 
   public int getX()
@@ -1862,8 +1824,7 @@ class invaderCl implements Invader
   public int getY()
   { return this.y; }
 
-  public void setPos(int x, int y)
-  {
+  public void setPos(int x, int y) {
     this.x = x;
     this.y = y;
   }
@@ -1871,8 +1832,7 @@ class invaderCl implements Invader
   public boolean touch(Shot e)
   { return (this.y < e.y && e.y < this.y+this.size && this.x < e.x && e.x < this.x+this.size); }
 
-  public void onTouch()
-  {
+  public void onTouch() {
     game.player.looseLive(1);
     this.dead = true;
   }

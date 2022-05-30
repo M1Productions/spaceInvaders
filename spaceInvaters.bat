@@ -1,7 +1,7 @@
 echo OFF
 
 echo ..start.database.server..
-start /min .\lib\hsqldb\bin\runServer.bat
+start .\lib\hsqldb\bin\runServer.bat
 echo -success-
 
 echo ..start.game..
