@@ -37,8 +37,7 @@ float img1Shift=0, img2Shift=235, img3Shift=470, img4Shift=-235;
 PImage screenShot, bg, bgMov1, bgMov2, bgMov3, bgMov4, greenInvader;
 ArrayList <Integer> modeHistory = new ArrayList <Integer> ();
 
-public void setup()
-{
+public void setup() {
   frameRate(30);
 
   windowX = displayWidth/2-350;
@@ -74,12 +73,10 @@ public void setup()
   ws.setup();
 }
 
-public void draw()
-{
+public void draw() {
   background(0);
 
-  switch(mode)
-  {
+  switch(mode) {
     case 0: login.draw();      break; //Login-Fenster
     case 1: menue.draw();      break; //Main menue
     case 2: game.draw();       break; //Game
@@ -97,10 +94,8 @@ public void draw()
   topBar.draw();
 }
 
-public void backgroundMove(float speed)
-{
-  if(graphix == 0)
-  {
+public void backgroundMove(float speed) {
+  if(graphix == 0) {
     image(bgMov1, 0, img1Shift);
     image(bgMov2, 0, img2Shift);
     image(bgMov3, 0, img3Shift);
@@ -126,15 +121,13 @@ public void backgroundMove(float speed)
   {image(bg, 0, 20);}
 }
 
-public void displayHeadline(String Text, int size)
-{
+public void displayHeadline(String Text, int size) {
   fill(color(255,0,162));
   textAlign(CENTER,CENTER);
   textSize(size);
   text(Text,width/2,120);
 }
-public void displayHeadline(String Text, int size, float height)
-{
+public void displayHeadline(String Text, int size, float height) {
   fill(color(255,0,162));
   textAlign(CENTER,CENTER);
   textSize(size);
@@ -142,8 +135,7 @@ public void displayHeadline(String Text, int size, float height)
 }
 
 public void keyPressed() {
-  switch(mode)
-  {
+  switch(mode) {
     case 0: login.keyPressed();      break;
     case 1: menue.keyPressed();      break;
     case 2: game.keyPressed();       break;
@@ -161,8 +153,7 @@ public void keyPressed() {
 }
 
 public void keyReleased() {
-  switch(mode)
-  {
+  switch(mode) {
     case 0: login.keyReleased();      break;
     case 1: menue.keyReleased();      break;
     case 2: game.keyReleased();       break;
@@ -178,15 +169,12 @@ public void keyReleased() {
   }
 }
 
-public void mousePressed()
-{
-  if(mouseY <= topBar.getH())
-  {
+public void mousePressed() {
+  if(mouseY <= topBar.getH()) {
     topBar.mousePressed();
   }
 
-  switch(mode)
-  {
+  switch(mode) {
     case 0: login.mousePressed();      break;
     case 1: menue.mousePressed();      break;
     case 2: game.mousePressed();       break;
@@ -202,12 +190,10 @@ public void mousePressed()
   }
 }
 
-public void mouseReleased()
-{
+public void mouseReleased() {
   topBar.mouseReleased();
 
-  switch(mode)
-  {
+  switch(mode) {
     case 0: login.mouseReleased();      break;
     case 1: menue.mouseReleased();      break;
     case 2: game.mouseReleased();       break;
@@ -224,8 +210,7 @@ public void mouseReleased()
 }
 
 
-interface Mode
-{
+interface Mode {
   public void setup();
   public void draw();
   public void keyPressed();
@@ -241,8 +226,7 @@ class TopMenueBar {
   boolean mouseWasPressed;
   int difX, difY;
 
-  public void setup()
-  {
+  public void setup() {
     this.quitButton = new ImageButton(loadImage("data/quitButton.png"),680,0,this.h,this.h,true);
     this.backBt = new ImageButton(loadImage("data/backButton.png"),0,0,this.h,this.h,false);
     this.menueButton = new ImageButton(loadImage("data/menueButton.png"),this.h,0,this.h,this.h,false);
@@ -271,22 +255,18 @@ class TopMenueBar {
     }
   }
 
-  public void mousePressed()
-  {
+  public void mousePressed() {
     difX = mouseX;
     difY = mouseY;
     this.mouseWasPressed = true;
 
-    if(mode == 2) //if you are in game you dont just want to leave because you cold loose your highscore
-    {
-      if((backBt.mouseIsOver() && modeHistory.size() > 0) || menueButton.mouseIsOver())
-      {
+    if(mode == 2) { //if you are in game you dont just want to leave because you cold loose your highscore
+      if((backBt.mouseIsOver() && modeHistory.size() > 0) || menueButton.mouseIsOver()) {
         ws.quitAfter = false;
         screenShot = get();
         mode = 11;
       }
-      else if(quitButton.mouseIsOver())
-      {
+      else if(quitButton.mouseIsOver()) {
         ws.quitAfter = true;
         screenShot = get();
         mode = 11;
@@ -301,8 +281,7 @@ class TopMenueBar {
         modeHistory.remove(modeHistory.size()-1);
       }
     }
-    else if(menueButton.mouseIsOver() && mode != 0 && mode != 11)
-    {
+    else if(menueButton.mouseIsOver() && mode != 0 && mode != 11) {
       modeHistory.add(mode);
       mode = 1;
     }
@@ -316,21 +295,18 @@ class TopMenueBar {
 }
 
 
-class WarningScreen implements Mode
-{
+class WarningScreen implements Mode {
   boolean quitAfter;
 
   Button passButton, saveScoreButton, backButton;
 
-  public void setup()
-  {
+  public void setup() {
     passButton = new Button("Don't save",100,400,500,80);
     saveScoreButton = new Button("Save",100,495,500,80);
     backButton = new Button("Cancel",100,590,500,80);
   }
 
-  public void draw()
-  {
+  public void draw() {
     background(screenShot);
     fill(255,0,162,50);
     rect(0,0,width,height);
@@ -346,18 +322,15 @@ class WarningScreen implements Mode
     backButton.draw();
   }
 
-  public void mousePressed()
-  {
-    if(passButton.mouseIsOver())
-    {
+  public void mousePressed() {
+    if(passButton.mouseIsOver()) {
       modeHistory.clear();
       if(this.quitAfter)
       { exit(); }
       else
       { mode = 1; }
     }
-    else if(saveScoreButton.mouseIsOver())
-    {
+    else if(saveScoreButton.mouseIsOver()) {
       modeHistory.clear();
       SQL.createRun(game.player.score);
       if(this.quitAfter)
@@ -375,14 +348,12 @@ class WarningScreen implements Mode
 }
 
 
-class Animation
-{
+class Animation {
   int x,y,index,lifetime,maxlifetime;
   PImage[] pictures; //Aktuelles Bild
   boolean dead;
 
-  Animation(int x, int y, int lifetime , PImage[] pictures)
-  {
+  Animation(int x, int y, int lifetime , PImage[] pictures) {
     this.x = x;
     this.y = y;
     this.maxlifetime = lifetime;
@@ -392,8 +363,7 @@ class Animation
     this.dead = false;
   }
 
-  public void draw()
-  {
+  public void draw() {
     if(this.lifetime >= this.maxlifetime)
     { this.dead = true; }
     else if((float)(this.index+1)/this.pictures.length < (float)this.lifetime/this.maxlifetime)
@@ -412,15 +382,13 @@ class Animation
 }
 
 
-class Button
-{
+class Button {
   String label;
   float x, y, w, h, textSize;
   int borderwith = 12;
   boolean mouseOn, state;
 
-  Button(String labelB, float xpos, float ypos, float widthB, float heightB)
-  {
+  Button(String labelB, float xpos, float ypos, float widthB, float heightB) {
     label = labelB;
     x = xpos;
     y = ypos;
@@ -454,8 +422,7 @@ class Button
   public boolean mouseIsOver()
   { return (mouseX > x && mouseX < (x + w) && mouseY > y && mouseY < (y + h)); }
 
-  public void hover()
-  {
+  public void hover() {
     if (this.mouseIsOver())
     { this.mouseOn = true; }
     else
@@ -482,15 +449,13 @@ class Button
 }
 
 
-class ImageButton
-{
+class ImageButton {
   PImage img;
   boolean isRed;
   float x, y, w, h;
   boolean mouseOn, state;
 
-  ImageButton(PImage img, float x, float y, float w, float h, boolean isRed)
-  {
+  ImageButton(PImage img, float x, float y, float w, float h, boolean isRed) {
     this.img = img;
     this.x = x;
     this.y = y;
@@ -503,8 +468,7 @@ class ImageButton
     this.hover();
 
     noStroke();
-    if(this.mouseOn || this.state)
-    {
+    if(this.mouseOn || this.state) {
       if(this.isRed)
       { fill(233,37,57); }
       else
@@ -521,8 +485,7 @@ class ImageButton
   public boolean mouseIsOver()
   { return (mouseX > x && mouseX < (x + w) && mouseY > y && mouseY < (y + h)); }
 
-  public void hover()
-  {
+  public void hover() {
     if (this.mouseIsOver())
     { this.mouseOn = true; }
     else
@@ -543,14 +506,12 @@ class ImageButton
 }
 
 
-class Login
-{
+class Login {
   TextBox inputUsername,inputPassword;
   Button loginButton,createAccButton,clearButton;
   float fade = 255;
 
-  public void setup()
-  {
+  public void setup() {
     inputUsername = new TextBox("Username",100,300,500,60,false);
     inputPassword = new TextBox("Password",100,400,500,60,false);
     loginButton = new Button("Login",400,500,200,60);
@@ -560,8 +521,7 @@ class Login
     clearButton.borderwith = 7;
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(1);
 
     inputUsername.draw();
@@ -575,8 +535,7 @@ class Login
 
     displayHeadline("Login", 106 , 125);
 
-    switch (codeerror)
-    {
+    switch (codeerror) {
       case 1:
         fill(255,0,0,this.fade);
         textAlign(LEFT,UP);
@@ -611,83 +570,65 @@ class Login
     inputPassword.keyPressed(key,(int)keyCode);
   }
 
-  public void mousePressed()
-  {
+  public void mousePressed() {
     inputUsername.mousePressed();
     inputPassword.mousePressed();
 
-    if(loginButton.mouseIsOver())
-    {
+    if(loginButton.mouseIsOver()) {
       submit(inputUsername.Text,inputPassword.Text);
       inputPassword.clearText();
     }
-    else if(createAccButton.mouseIsOver())
-    {
+    else if(createAccButton.mouseIsOver()) {
       createAccount(inputUsername.Text,inputPassword.Text);
       inputPassword.clearText();
     }
-    else if(clearButton.mouseIsOver())
-    {
+    else if(clearButton.mouseIsOver()) {
       inputUsername.clearText();
       inputPassword.clearText();
     }
   }
 
-  public void submit(String username, String password)
-  {
-    if(username.length() == 0 || password.length() <= 2)
-    {
+  public void submit(String username, String password) {
+    if(username.length() == 0 || password.length() <= 2) {
       this.fade = 255;
       codeerror = 1;
     }
-    else
-    {
-      if(SQL.submit(username, password))
-      {
-        if(SQL.createSession(CurrentData.getUsername()))
-        {
+    else {
+      if(SQL.submit(username, password)) {
+        if(SQL.createSession(CurrentData.getUsername())) {
           ck.updateKeys();
           modeHistory.add(mode);
           mode = 1;
         }
-        else
-        {
+        else {
           this.fade = 255;
           codeerror = 4;
         }
       }
-      else
-      {
+      else {
         this.fade = 255;
         codeerror = 1;
       }
     }
   }
 
-  public void createAccount(String username, String password)
-  {
-    if(username.length() <= 2 || password.length() <= 2)
-    {
+  public void createAccount(String username, String password) {
+    if(username.length() <= 2 || password.length() <= 2) {
       this.fade = 255;
       codeerror = 3;
     }
-    else
-    {
-      if(SQL.createAccount(username, password))
-      {
-        if(SQL.createSession(CurrentData.getUsername()))
-        {
+    else {
+      if(SQL.createAccount(username, password)) {
+        if(SQL.createSession(CurrentData.getUsername())) {
           modeHistory.add(mode);
           mode = 1;
         }
-        else
-        {
+        else {
           this.fade = 255;
           codeerror = 4;
         }
       }
-      else
-      {
+      else {
         this.fade = 255;
         codeerror=2;
       }
@@ -699,8 +640,7 @@ class Login
 }
 
 
-public class TextBox
-{
+public class TextBox {
   public int x, y, h, w, textLim = 16,strokeWeight;
   public int bg = color(255,0,162,50), bgselect = color(255,0,162,150), col = color(255,0,162);
 
@@ -710,8 +650,7 @@ public class TextBox
 
    public int index=0; //for KeyChoose
 
-   TextBox(String spaceHolder, int x, int y, int w, int h, boolean single)
-   {
+   TextBox(String spaceHolder, int x, int y, int w, int h, boolean single) {
      this.spaceHolder = spaceHolder;
      this.x = x;
      this.y = y;
@@ -721,8 +660,7 @@ public class TextBox
      this.strokeWeight = (int)h/5;
    }
 
-   public void draw()
-   {
+   public void draw() {
       if (selected)
       { fill(bgselect); }
       else
@@ -742,8 +680,7 @@ public class TextBox
         fill(col);
         text(spaceHolder, x+10, y+(h/2)-(h/16));
       }
-      else
-      {
+      else {
         fill(255);
         if(this.singleLetter)
         { text(Text, x+w/2-h/8, y+(h/2)-(h/16)); }
@@ -809,10 +746,8 @@ class ScoreTable {
   ScoreTable(String [][] Array)
   { this.content = Array; }
 
-  void draw()
-  {
-     if (state)
-     {
+  void draw() {
+     if (state) {
        stroke(255);
        strokeWeight(10);
        line(this.x,this.y+15,this.x+this.w,this.y+15);
@@ -824,10 +759,8 @@ class ScoreTable {
        textAlign(RIGHT);
        text("Score",this.x+this.w,this.y);
 
-       for(int i=0; i<content.length; i++)
-       {
-         if(content[i][0] == null)
-         {
+       for(int i=0; i<content.length; i++) {
+         if(content[i][0] == null) {
            content[i][0] = "-----";
            content[i][1] = "-----";
          }
@@ -844,19 +777,16 @@ class ScoreTable {
 }
 
 
-class Menue implements Mode
-{
+class Menue implements Mode {
   Button playButton,highscoreButton,settingsButton;
 
-  public void setup()
-  {
+  public void setup() {
     playButton = new Button("Play",100,190,500,80);
     highscoreButton = new Button("Highscore",100,310,500,80);
     settingsButton = new Button("Settings",100,430,500,80);
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(1);
 
     displayHeadline("Menue", 78);
@@ -866,22 +796,18 @@ class Menue implements Mode
     settingsButton.draw();
   }
 
-  public void mousePressed()
-  {
-    if(playButton.mouseIsOver())
-    {
+  public void mousePressed() {
+    if(playButton.mouseIsOver()) {
       game.restart();
       modeHistory.add(mode);
       mode = 2;
     }
-    else if(highscoreButton.mouseIsOver())
-    {
+    else if(highscoreButton.mouseIsOver()) {
       hs.checkHighscoreTables();
       modeHistory.add(mode);
       mode = 6;
     }
-    else if(settingsButton.mouseIsOver())
-    {
+    else if(settingsButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 4;
     }
@@ -893,20 +819,17 @@ class Menue implements Mode
 }
 
 
-class AccountMenue implements Mode
-{
+class AccountMenue implements Mode {
   Button signOutButton,changePwButton,deleteButton;
 
-  public void setup()
-  {
+  public void setup() {
 
     changePwButton = new Button("Change Password",100,190,500,80);
     deleteButton = new Button("Delete Account",100,310,500,80);
     signOutButton = new Button("Sign out",100,430,500,80);
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(1);
 
     displayHeadline("My account", 78);
@@ -916,20 +839,16 @@ class AccountMenue implements Mode
     deleteButton.draw();
   }
 
-  public void mousePressed()
-  {
-    if(signOutButton.mouseIsOver())
-    {
+  public void mousePressed() {
+    if(signOutButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 0;
     }
-    else if(changePwButton.mouseIsOver())
-    {
+    else if(changePwButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 8;
     }
-    else if(deleteButton.mouseIsOver())
-    {
+    else if(deleteButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 9;
     }
@@ -941,14 +860,12 @@ class AccountMenue implements Mode
 }
 
 
-class DeleteAcScreen implements Mode
-{
+class DeleteAcScreen implements Mode {
   Button deleteButton, clearButton;
   TextBox password;
   int fade = 255, codeerror = 0;
 
-  public void setup()
-  {
+  public void setup() {
     password = new TextBox("Enter password", 100,250,500,60,false);
     deleteButton = new Button("Delete",225,350,250,80);
 
@@ -956,8 +873,7 @@ class DeleteAcScreen implements Mode
     clearButton.borderwith = 7;
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(1);
 
     displayHeadline("Delete account", 65);
@@ -967,8 +883,7 @@ class DeleteAcScreen implements Mode
     if(password.Text != "")
     { clearButton.draw(); }
 
-    switch (codeerror)
-    {
+    switch (codeerror) {
       case 1:
         fill(255,0,0,this.fade);
         textAlign(LEFT,UP);
@@ -984,8 +899,7 @@ class DeleteAcScreen implements Mode
     password.keyPressed(key,(int)keyCode);
   }
 
-  public void mousePressed()
-  {
+  public void mousePressed() {
     password.mousePressed();
 
     if(deleteButton.mouseIsOver())
@@ -994,10 +908,8 @@ class DeleteAcScreen implements Mode
     { password.clearText(); }
   }
 
-  public void deleteAccount(String password)
-  {
-    if(SQL.deleteAccount(password))
-    {
+  public void deleteAccount(String password) {
+    if(SQL.deleteAccount(password)) {
       modeHistory.add(mode);
       mode = 0;
       this.password.clearText();
@@ -1011,14 +923,12 @@ class DeleteAcScreen implements Mode
 }
 
 
-class ChangePwScreen implements Mode
-{
+class ChangePwScreen implements Mode {
   Button aplyButton, clearButton;
   TextBox oldPassword, newPassword;
   int fade = 255, codeerror = 0;
 
-  public void setup()
-  {
+  public void setup() {
     oldPassword = new TextBox("Old password", 100,250,500,60,false);
     newPassword = new TextBox("New Password", 100,350,500,60,false);
     aplyButton = new Button("Apply",250,450,200,60);
@@ -1028,8 +938,7 @@ class ChangePwScreen implements Mode
     clearButton.borderwith = 7;
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(1);
 
     displayHeadline("Change password", 65);
@@ -1040,8 +949,7 @@ class ChangePwScreen implements Mode
     if(oldPassword.Text != "" || newPassword.Text != "")
     { clearButton.draw(); }
 
-    switch (codeerror)
-    {
+    switch (codeerror) {
       case 1:
         fill(255,0,0,this.fade);
         textAlign(LEFT,UP);
@@ -1064,26 +972,21 @@ class ChangePwScreen implements Mode
     newPassword.keyPressed(key,(int)keyCode);
   }
 
-  public void mousePressed()
-  {
+  public void mousePressed() {
     oldPassword.mousePressed();
     newPassword.mousePressed();
 
     if(aplyButton.mouseIsOver())
     { changePassword(oldPassword.Text, newPassword.Text); }
-    else if(clearButton.mouseIsOver())
-    {
+    else if(clearButton.mouseIsOver()) {
       oldPassword.clearText();
       newPassword.clearText();
     }
   }
 
-  public void changePassword(String oldPw, String newPw)
-  {
-    if(newPw.length() >= 3)
-    {
-      if(SQL.setPassword(oldPw, newPw))
-      {
+  public void changePassword(String oldPw, String newPw) {
+    if(newPw.length() >= 3) {
+      if(SQL.setPassword(oldPw, newPw)) {
         modeHistory.add(mode);
         mode = 7;
         oldPassword.clearText(); newPassword.clearText();
@@ -1100,14 +1003,12 @@ class ChangePwScreen implements Mode
 }
 
 
-class HighscoreScreen implements Mode
-{
+class HighscoreScreen implements Mode {
   int drawHighscores = 1; //0 == global Highscores, 1 == personal Highscores
   Button globalButton, personalButton;
   ScoreTable globalTable, personalTable;
 
-  public void setup()
-  {
+  public void setup() {
     globalButton = new Button("All Highscores",360,50,230,80);
     personalButton = new Button("My Highscores",100,50,230,80); //leads to the personal Highscores insteat of the global Highscores or back
 
@@ -1118,8 +1019,7 @@ class HighscoreScreen implements Mode
     personalButton.setTextSize(30);
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(1);
 
     globalButton.draw();
@@ -1128,8 +1028,7 @@ class HighscoreScreen implements Mode
     personalTable.draw();
   }
 
-  public void checkHighscoreTables()
-  {
+  public void checkHighscoreTables() {
     globalTable   = new ScoreTable(SQL.getGlobalTable());
     personalTable = new ScoreTable(SQL.getPersonalTable(CurrentData.getUsername()));
     globalButton.mark(false);
@@ -1138,18 +1037,15 @@ class HighscoreScreen implements Mode
     personalTable.show(true);
   }
 
-  public void mousePressed()
-  {
-    if(personalButton.mouseIsOver())
-    {
+  public void mousePressed() {
+    if(personalButton.mouseIsOver()) {
       this.drawHighscores = 1;
       globalButton.mark(false);
       personalButton.mark(true);
       globalTable.show(false);
       personalTable.show(true);
     }
-    else if(globalButton.mouseIsOver())
-    {
+    else if(globalButton.mouseIsOver()) {
       this.drawHighscores = 0;
       globalButton.mark(true);
       personalButton.mark(false);
@@ -1164,20 +1060,17 @@ class HighscoreScreen implements Mode
 }
 
 
-class Settings implements Mode
-{
+class Settings implements Mode {
   int lastGraphix;
   Button graphicsButton, csdmKeysButton, accountButton;
 
-  public void setup()
-  {
+  public void setup() {
     graphicsButton = new Button("graphics: High",100,190,500,80);
     csdmKeysButton = new Button("Custom keybinds",100,310,500,80);
     accountButton = new Button("My Account",100,430,500,80);
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(1);
 
     displayHeadline("Settings", 78);
@@ -1187,34 +1080,27 @@ class Settings implements Mode
     accountButton.draw();
   }
 
-  public void mousePressed()
-  {
-    if(graphicsButton.mouseIsOver())
-    {
-      if(graphix == 0 || graphix == 2)
-      {
+  public void mousePressed() {
+    if(graphicsButton.mouseIsOver()) {
+      if(graphix == 0 || graphix == 2) {
         this.lastGraphix = graphix;
         graphix = 1;
         graphicsButton.changeLabel("graphics: Middle");
       }
-      else if(graphix == 1 && this.lastGraphix == 0)
-      {
+      else if(graphix == 1 && this.lastGraphix == 0) {
         graphix = 2;
         graphicsButton.changeLabel("graphics: Low");
       }
-      else if(graphix == 1 && this.lastGraphix == 2)
-      {
+      else if(graphix == 1 && this.lastGraphix == 2) {
         graphix = 0;
         graphicsButton.changeLabel("graphics: High");
       }
     }
-    else if(csdmKeysButton.mouseIsOver())
-    {
+    else if(csdmKeysButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 10;
     }
-    else if(accountButton.mouseIsOver())
-    {
+    else if(accountButton.mouseIsOver()) {
       modeHistory.add(mode);
       mode = 7;
     }
@@ -1226,8 +1112,7 @@ class Settings implements Mode
 }
 
 
-class CustomKeys implements Mode
-{
+class CustomKeys implements Mode {
   Button aplyButton;
   TextBox shootKey, rightKey, leftKey;
 
@@ -1279,8 +1164,7 @@ class CustomKeys implements Mode
     rect(100,370,500,56,10);
   }
 
-  public void mousePressed()
-  {
+  public void mousePressed() {
     rightKey.mousePressed();
     leftKey.mousePressed();
     shootKey.mousePressed();
@@ -1312,8 +1196,7 @@ class CustomKeys implements Mode
 }
 
 
-class Game implements Mode
-{
+class Game implements Mode {
   ArrayList<Invader> allInvaders;
   ArrayList<Shot> invaderShots;
   ArrayList<Animation> animations;
@@ -1330,8 +1213,7 @@ class Game implements Mode
   Shot s, ss;
   Animation a;
 
-  public void setup()
-  {
+  public void setup() {
     bu = new Button("||", width-40, 30, 30, 30);
     bu.borderwith = 5;
 
@@ -1369,8 +1251,7 @@ class Game implements Mode
     restart();
   }
 
-  public void restart()
-  {
+  public void restart() {
     bgMoveSpeed = 1;
     allInvaders.clear();
     invaderShots.clear();
@@ -1384,14 +1265,12 @@ class Game implements Mode
     { keys[i] = false; }
   }
 
-  public void draw()
-  {
+  public void draw() {
     backgroundMove(bgMoveSpeed);
     if(bgMoveSpeed < 6)
     {bgMoveSpeed *= 1.00009955;}
 
-    if(spawnCooldown >= spawnRate)
-    {
+    if(spawnCooldown >= spawnRate) {
       spawnEnemies(1);
       spawnCooldown = 0;
     }
@@ -1411,12 +1290,10 @@ class Game implements Mode
           player.playerShots.remove(s);
         }
       }
-      for(int j = invaderShots.size() -1; j >= 0; j--)
-      {
+      for(int j = invaderShots.size() -1; j >= 0; j--) {
         ss = invaderShots.get(j);
 
-        if(s.y <= ss.y && s.y+s.h >= ss.y && s.x <= ss.x && s.x+s.w >= ss.x)
-        {
+        if(s.y <= ss.y && s.y+s.h >= ss.y && s.x <= ss.x && s.x+s.w >= ss.x) {
           player.score++;
           invaderShots.remove(ss);
           player.playerShots.remove(s);
@@ -1444,10 +1321,8 @@ class Game implements Mode
     }
 
     // animations draw
-    if(graphix == 0)
-    {
-      for(int i = animations.size() -1; i >= 0; i--)
-      {
+    if(graphix == 0) {
+      for(int i = animations.size() -1; i >= 0; i--) {
         a = animations.get(i);
         a.draw();
         if (a.isDead())
@@ -1471,8 +1346,7 @@ class Game implements Mode
 
     bu.draw(); // pauseButton draw
 
-    if(keyPressed) // KeyPressed handling
-    {
+    if(keyPressed) { // KeyPressed handling
       if(keys[0])
       { player.move(-5); }
       if(keys[1])
@@ -1491,10 +1365,8 @@ class Game implements Mode
     }
   }
 
-  public void spawnEnemies(int anz)
-  {
-    for(int i = 0; i < anz; i++)
-    {
+  public void spawnEnemies(int anz) {
+    for(int i = 0; i < anz; i++) {
       int xNew = 20+100*i;
 
       int r = PApplet.parseInt(random(100));
@@ -1513,8 +1385,7 @@ class Game implements Mode
     }
   }
 
-  public void keyPressed()
-  {
+  public void keyPressed() {
     if((CurrentData.getKeys()[0] == '<' && (keyCode == LEFT)) || (CurrentData.getKeys()[0] == '>' && (keyCode == RIGHT)) || (CurrentData.getKeys()[0] == '^' && (keyCode == UP)) || (CurrentData.getKeys()[0] == key)) //leftKey
     { keys[0] = true; }
     else if((CurrentData.getKeys()[1] == '<' && (keyCode == LEFT)) || (CurrentData.getKeys()[1] == '>' && (keyCode == RIGHT)) || (CurrentData.getKeys()[1] == '^' && (keyCode == UP)) || (CurrentData.getKeys()[1] == key)) //rightKey
@@ -1523,8 +1394,7 @@ class Game implements Mode
     { keys[2] = true; }
   }
 
-  public void keyReleased()
-  {
+  public void keyReleased() {
     if((CurrentData.getKeys()[0] == '<' && (keyCode == LEFT)) || (CurrentData.getKeys()[0] == '>' && (keyCode == RIGHT)) || (CurrentData.getKeys()[0] == '^' && (keyCode == UP)) || (CurrentData.getKeys()[0] == key)) //leftKey
     { keys[0] = false; }
     else if((CurrentData.getKeys()[1] == '<' && (keyCode == LEFT)) || (CurrentData.getKeys()[1] == '>' && (keyCode == RIGHT)) || (CurrentData.getKeys()[1] == '^' && (keyCode == UP)) || (CurrentData.getKeys()[1] == key)) //rightKey
@@ -1534,10 +1404,8 @@ class Game implements Mode
   }
 
 
-  public void mousePressed()
-  {
-    if(bu.mouseIsOver())
-    {
+  public void mousePressed() {
+    if(bu.mouseIsOver()) {
       screenShot = get();
       modeHistory.add(mode);
       mode = 3;
@@ -1548,8 +1416,7 @@ class Game implements Mode
 }
 
 
-interface Invader
-{
+interface Invader {
   public void draw();
   public boolean touch(Shot s);
   public int getX();
@@ -1560,21 +1427,18 @@ interface Invader
 }
 
 
-class IGMenue implements Mode
-{
+class IGMenue implements Mode {
   Button continueButton, restartButton, settingsButton, mainMenueButton;
   PImage bg;
 
-  public void setup()
-  {
+  public void setup() {
     continueButton = new Button("Continue",100,120,500,80);
     restartButton = new Button("Restart",100,240,500,80);
     settingsButton = new Button("Settings",100,360,500,80);
     mainMenueButton = new Button("Main Menue",100,480,500,80);
   }
 
-  public void draw()
-  {
+  public void draw() {
     background(screenShot);
     fill(0, 0, 0, 100);
     rect(0, 0, width, height);
@@ -1610,20 +1474,17 @@ class IGMenue implements Mode
 }
 
 
-class DeathScreen implements Mode
-{
+class DeathScreen implements Mode {
   Button restartButton, mainMenueButton;
   PImage bg;
 
-  public void setup()
-  {
+  public void setup() {
     bg = screenShot;
     restartButton = new Button("Restart",100,240,500,80);
     mainMenueButton = new Button("Main Menue",100,360,500,80);
   }
 
-  public void draw()
-  {
+  public void draw() {
     background(screenShot);
     fill(0, 0, 0, 100);
     rect(0, 0, width, height);
@@ -1634,8 +1495,7 @@ class DeathScreen implements Mode
     mainMenueButton.draw();
   }
 
-  public void mousePressed()
-  {
+  public void mousePressed() {
     if(restartButton.mouseIsOver()) {
       game.restart();
       modeHistory.add(mode);
@@ -1653,16 +1513,14 @@ class DeathScreen implements Mode
 }
 
 
-class Player
-{
+class Player {
   int x, y, size, lives, score, cooldown;
   float rate, pointMult; // firing rate; multiplyer for more points in longer games
-  PImage img;
-  PImage heart = loadImage("heart.png");
+  private PImage img;
+  private PImage heart;
   ArrayList<Shot> playerShots = new ArrayList <Shot>();
 
-  Player(int x, int y, int size, PImage img)
-  {
+  Player(int x, int y, int size, PImage img) {
     this.x = x;
     this.y = y;
     this.size = size;
@@ -1672,10 +1530,10 @@ class Player
     this.score = 0;
     this.rate = 34;
     this.pointMult = 1;
+    this.heart = loadImage("heart.png");
   }
 
-  public void draw()
-  {
+  public void draw() {
     if(pointMult < 5) {
       pointMult *= 1.000089417;
     }
@@ -1691,8 +1549,9 @@ class Player
         fill(255,0,0);
         circle(25+40*i, 55, 30);
       }
-      else
-      { image(this.heart, 10+40*i, 30, 30, 30); }
+      else {
+        image(this.heart, 10+40*i, 30, 30, 30);
+      }
     }
 
     if(graphix == 2) {
@@ -1700,8 +1559,9 @@ class Player
       fill(255);
       circle(this.x+this.size/2, this.y+this.size/2, this.size);
     }
-    else
-    { image(this.img,this.x,this.y,this.size,this.size); }
+    else {
+      image(this.img,this.x,this.y,this.size,this.size);
+    }
 
     this.cooldown++;
     if(this.rate>17)
@@ -1731,10 +1591,12 @@ class Player
   }
 
   public void addLive() {
-    if(this.lives<=4)
-    { this.lives ++; }
-    else
-    { this.score += 10; } // way too less !
+    if(this.lives<=4) {
+      this.lives ++;
+    }
+    else {
+      this.score += 10; // way too less !
+    }
   }
 
   public boolean touch(Shot e) {
@@ -1743,8 +1605,7 @@ class Player
 }
 
 
-class Shot
-{
+class Shot {
   int x, y, v, h, w; // v=velocity in vertical direction
   int col;
 
@@ -1766,28 +1627,29 @@ class Shot
 }
 
 
-class invaderCl implements Invader
-{
+class redInvader implements Invader {
   int x, y, v, size;
   int points;
   PImage img;
-  boolean dead = false;
-  int spawn = 3; //for the spawning animation
+  boolean dead;
+  int spawn; // for the spawning animation
 
-  invaderCl(int x, int y, int size, int v, PImage img, Game game)
-  {
+  redInvader(int x, int y, int size, int v, PImage img, Game game) {
     this.x = x;
     this.y = y;
     this.v = v;
-    this.size = size - this.spawn*5;
     this.img = img;
+
+    this.dead = false;
+    this.spawn = 3;
+    this.size = size - this.spawn*5;
+    this.points = 5;
   }
 
   public void draw() {
     this.x += this.v; // go in moving direction
 
-    if(this.x >= width-this.size || this.x <= 0) //if the invader goes out of the screen on the right/ left
-    {
+    if(this.x >= width-this.size || this.x <= 0) { //if the invader goes out of the screen on the right/ left
       if(this.v < 0) {
         this.v = (this.v-1) *(-1);
       }
@@ -1799,8 +1661,7 @@ class invaderCl implements Invader
       { this.onTouch(); }
     }
 
-    if(this.spawn > 0)
-    {
+    if(this.spawn > 0) {
       this.spawn --;
       this.size += 5;
     }
@@ -1837,8 +1698,7 @@ class invaderCl implements Invader
     this.dead = true;
   }
 
-  public void onDie()
-  {
+  public void onDie() {
     game.player.addPoints(this.points);
     this.dead = true;
   }
@@ -1848,23 +1708,18 @@ class invaderCl implements Invader
 }
 
 
-class blueInvader extends invaderCl implements Invader
-{
-  blueInvader(int x, int y, int size, int v, PImage img, Game game)
-  {
+class blueInvader extends redInvader implements Invader {
+  blueInvader(int x, int y, int size, int v, PImage img, Game game) {
     super(x, y, size, v, img, game);
     this.points = 5;
   }
 
-  public void onTouch()
-  {
-    game.player.looseLive(1);
+  public void onTouch() {
+    game.player.looseLive(2);
     this.dead = true;
-    this.onDie();
   }
 
-  public void onDie()
-  {
+  public void onDie() {
     game.player.addPoints(this.points);
     this.dead = true;
     game.allInvaders.add(new greenInvader(this.x, this.y, this.size, this.v, game.blueInvader2,game));
@@ -1872,16 +1727,13 @@ class blueInvader extends invaderCl implements Invader
 }
 
 
-class friendlyShip extends invaderCl implements Invader
-{
-  friendlyShip(int x, int y, int size, int v, PImage img, Game game)
-  {
+class friendlyShip extends redInvader implements Invader {
+  friendlyShip(int x, int y, int size, int v, PImage img, Game game) {
     super(x, y, size, v, img, game);
     this.points = 100;
   }
 
-  public void draw()
-  {
+  public void draw() {
     if(this.x >= width-this.size) //if the ship goes out of the screen on the right
     { this.img = game.friendlyShipLeft; }
     else if(this.x <= 0) //if the ship goes out of the screen on the left
@@ -1890,99 +1742,80 @@ class friendlyShip extends invaderCl implements Invader
     super.draw();
   }
 
-  public void onTouch()
-  {
+  public void onTouch() {
     game.player.addLive();
     this.dead = true;
   }
 
-  public void onDie()
-  {
+  public void onDie() {
     this.dead = true;
     game.player.looseLive(1);
   }
 }
 
 
-class greenInvader extends invaderCl implements Invader
-{
-  int cooldown = 0;
-  greenInvader(int x, int y, int size, int v, PImage img,Game game)
-  {
+class greenInvader extends redInvader implements Invader {
+  private int cooldown;
+
+  greenInvader(int x, int y, int size, int v, PImage img,Game game) {
     super(x, y, size, v, img, game);
     this.points = 10;
+    this.cooldown = PApplet.parseInt(random(44,66));
   }
 
-  public void draw()
-  {
-    if(this.cooldown >= random(44,66))
-    { this.shoot(); }
-    this.cooldown ++;
+  public void draw() {
+    if(this.cooldown <= 0) {
+      this.shoot();
+    }
+    this.cooldown --;
 
     super.draw();
   }
 
-  public void shoot()
-  {
+  private void shoot() {
     game.invaderShots.add(new Shot(this.x+this.size/2 +5, this.y, 2, 10, 5, 0xff00FF00));
-    this.cooldown = 0;
+    this.cooldown = PApplet.parseInt(random(44,66));
   }
 }
 
 
-class purpleInvader extends invaderCl implements Invader
+class purpleInvader extends redInvader implements Invader
 {
-  int cooldown=0;
-  purpleInvader(int x, int y, int size, int v, PImage img,Game game)
-  {
+  int cooldown;
+  purpleInvader(int x, int y, int size, int v, PImage img,Game game) {
     super(x, y, size, v, img, game);
     this.points = 20;
+    this.cooldown = PApplet.parseInt(random(15,30));
   }
 
-  public void draw()
-  {
-    if(this.cooldown >= random(15,30) && game.player.x+(game.player.size/2)-10 <= this.x && game.player.x+(game.player.size/2)+10 >= this.x)
-    { this.shoot(); }
-    this.cooldown ++;
+  public void draw() {
+    if(this.cooldown <= 0 && game.player.x+(game.player.size/2)-10 <= this.x && game.player.x+(game.player.size/2)+10 >= this.x) {
+      this.shoot();
+    }
+    this.cooldown --;
 
     super.draw();
   }
 
-  public void shoot()
-  {
+  public void shoot() {
     game.invaderShots.add(new Shot(this.x+this.size/2 +5, this.y, 2, 10, 10, 0xffFF00FF));
-    this.cooldown = 0;
+    this.cooldown = PApplet.parseInt(random(15,30));
   }
 }
 
 
-class redInvader extends invaderCl implements Invader
-{
-  redInvader(int x, int y, int size, int v, PImage img,Game game)
-  {
-    super(x, y, size, v, img, game);
-    this.points = 5;
-  }
-}
-
-
-class yellowInvader extends invaderCl implements Invader
-{
-  yellowInvader(int x, int y, int size, int v, PImage img,Game game)
-  {
+class yellowInvader extends redInvader implements Invader {
+  yellowInvader(int x, int y, int size, int v, PImage img,Game game) {
     super(x, y, size, v, img, game);
     this.points = 5;
   }
 
-  public void onTouch()
-  {
-    game.player.looseLive(1);
+  public void onTouch() {
+    game.player.looseLive(2);
     this.dead = true;
-    this.onDie();
   }
 
-  public void onDie()
-  {
+  public void onDie() {
     game.player.addPoints(this.points);
     this.dead = true;
     game.allInvaders.add(new redInvader(this.x, this.y, this.size, this.v, game.yellowRedInvader,game));
@@ -1994,8 +1827,7 @@ class yellowInvader extends invaderCl implements Invader
 public void settings()
 { fullScreen(); }
 
-static public void main(String[] passedArgs)
-{
+static public void main(String[] passedArgs) {
   Connections.initConnections();
   String[] appletArgs = new String[]
   { "main" };

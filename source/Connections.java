@@ -12,10 +12,7 @@ public class Connections
 	private static Connection conn       = null;
 	private static Properties properties = null;
 
-	private  static void initProperties()
-	{
-
-
+	private  static void initProperties() {
 		File propertiesFile = new File("data/Properties.txt");
 		properties = new Properties();
 
@@ -46,12 +43,10 @@ public class Connections
 		String pwd    = properties.getProperty("PASSWORD") ;
 
 		// Datenbank Connection oeffnen
-		try
-		{
+		try {
 			Class.forName(driver);
 		}
-		catch(ClassNotFoundException exc)
-		{
+		catch(ClassNotFoundException exc) {
 			System.err.println("Fehler: Treiber nicht gefunden");
 			System.err.println("Das bedeutet, dass die Datei <hsqldb.jar> ");
 			System.err.println("nicht im Klassenpfad gefunden wird.");
@@ -61,12 +56,10 @@ public class Connections
 			System.exit(1);
 		}
 
-		try
-		{
+		try {
 			conn = DriverManager.getConnection(url,user,pwd);
 		}
-		catch(SQLException exc)
-		{
+		catch(SQLException exc) {
 			System.err.println("Fehler: Datenbankverbindung konnte nicht aufgebaut werden.");
 			System.err.println("Bei Standalone: Es muessen alle anderen Anwendungen gesch lossen werden.");
 			System.err.println("Bei Client/Server: Es muss ein Server gestartet werden.");
@@ -79,8 +72,7 @@ public class Connections
 	/**
 	 * Connection-Objekt abfragen
 	 */
-	public static Connection getConnection()
-	{
+	public static Connection getConnection() {
 		Connection erg =  conn;
 		conn = null;
 		return erg;
@@ -89,11 +81,7 @@ public class Connections
    /**
     * Connection-Objekt zuruecklegen
 	*/
-	public static void putConnection(Connection conn)
-	{
+	public static void putConnection(Connection conn) {
 		Connections.conn = conn;
 	}
-
-
-
 }
